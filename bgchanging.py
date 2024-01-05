@@ -59,6 +59,9 @@ def main(args):
     mask_of_image, object_of_image = Inference(args, save_path).test()
     rgb_image = cv2.cvtColor(mask_of_image, cv2.COLOR_BGR2RGB)
     mask = Image.fromarray(rgb_image)
+    thresh = 200
+    fn = lambda x : 255 if x > thresh else 0
+    mask = mask.convert('L').point(fn, mode='1')
 
     # Setup hyper parameters
     hp_dict = {
