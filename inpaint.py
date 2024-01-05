@@ -40,23 +40,9 @@ def main(args):
     torch.backends.cudnn.benchmark = False
 
     # Set Some Config Path
-    img_url = "./TRACER/data/custom_dataset/Image.png"
+    img_url = "./Test_Image/Image.png"
+    mask_url = "./Test_Image/Mask.png"
     output_final_url = "./Test_Output/inpaint.png"
-
-    # Get image
-    input_url = args.input_path
-    inputImage = cv2.imread(input_url)
-    save_input = cv2.imwrite(img_url, inputImage)
-
-    # Remove Back ground and get
-    save_path = os.path.join(
-        args.model_path, args.dataset, f"TE{args.arch}_{str(args.exp_num)}"
-    )
-
-    # Get pre-mask
-    mask_of_image, object_of_image = Inference(args, save_path).test()
-    rgb_image = cv2.cvtColor(mask_of_image, cv2.COLOR_BGR2RGB)
-    mask = Image.fromarray(rgb_image)
 
     # Setup hyper parameters
     hp_dict = {
@@ -84,9 +70,11 @@ def main(args):
 
     # Get input
     image = Image.open(img_url)
+    mask = Image.open(mask_url)
 
     # Generate Image
-    output_Image = diffusion_gen.inpaint_image(image=image, mask=ImageOps.invert(mask))
+    output_Image = diffusion_gen.inpaint_image(image=image, mask=mask)
+    output_Image.save(output_final_url)
 
 if __name__ == "__main__":
     main(args)
