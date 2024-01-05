@@ -4,7 +4,6 @@ from diffusers.utils import load_image
 
 # Image Gen Library
 from SD_XL.diffusion_gen import *
-from SD_XL.post_process import *
 
 # Image Library
 from PIL import Image, ImageOps
@@ -28,7 +27,6 @@ warnings.filterwarnings("ignore")
 # args = getConfig_Input()
 args = getConfig()
 
-
 def main(args):
     # Random Seed
     seed = args.seed
@@ -43,7 +41,7 @@ def main(args):
 
     # Set Some Config Path
     img_url = "./TRACER/data/custom_dataset/Image.png"
-    output_final_url = "./Test_Output/bg_output.png"
+    output_final_url = "./Test_Output/inpaint.png"
 
     # Get image
     input_url = args.input_path
@@ -62,15 +60,15 @@ def main(args):
 
     # Setup hyper parameters
     hp_dict = {
-        "seed": -305,
-        "kernel_size": (5, 5),
-        "kernel_iterations": 15,
-        "num_inference_steps": 70,
-        "denoising_start": 0.70,
-        "guidance_scale": 7.5,
-        "prompt": args.prompt,
-        "negative_prompt": args.negative_prompt,
-    }
+        "seed" : 116,
+        "kernel_size": (5,5),
+        "kernel_iterations" : 15,
+        "num_inference_steps" : 70,
+        "denoising_start" : 0.70,
+        "guidance_scale" : 7.5,
+        "prompt" : args.prompt,
+        "negative_prompt" : args.negative_prompt,
+        }
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     # Model Pipeline calling
@@ -89,12 +87,6 @@ def main(args):
 
     # Generate Image
     output_Image = diffusion_gen.inpaint_image(image=image, mask=ImageOps.invert(mask))
-
-    # # Execute
-    post_processing = PostProcessing(image, mask, output_Image)
-    output_final = post_processing.overlay_object2output()
-    output_final.save(output_final_url)
-
 
 if __name__ == "__main__":
     main(args)
