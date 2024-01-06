@@ -67,8 +67,8 @@ def main(args):
     diffusion_gen = DiffusionGenerationV2(inpaint_pipe, hp_dict, device)
 
     # Get input
-    image = Image.open(img_url)
-    mask = Image.open(mask_url)
+    image = Image.open(args.input_path)
+    mask = Image.open(args.mask_path)
 
     # Generate Image
     output_Image = diffusion_gen.inpaint_image(image=image, mask=mask)
