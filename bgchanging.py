@@ -78,10 +78,8 @@ def main(args):
 
     # Model Pipeline calling
     inpaint_pipe = AutoPipelineForInpainting.from_pretrained(
-        "stabilityai/stable-diffusion-xl-base-1.0",
-        torch_dtype=torch.float16,
-        variant="fp16",
-        use_safetensors=True,
+        "stabilityai/stable-diffusion-2-inpainting",
+        torch_dtype=torch.float32,
     )
 
     # Execute
