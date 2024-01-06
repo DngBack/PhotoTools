@@ -5,7 +5,7 @@ def getConfig_Input():
 
     # Prompt Condition settings
     parser.add_argument("-p", "--prompt", type=str, help="Prompt to generate image")
-    parser.add_argument("-n", "--negative_prompt", type=str, help="Negative prompt")
+    parser.add_argument("-n", "--negative_prompt", type=str, help="Negative prompt", default="disfigured, ugly, bad, immature, cartoon, anime, 3d, painting, b&w, person, draw, art")
     parser.add_argument("--input_path", type=str, default=None)
 
 def getConfig():
@@ -13,7 +13,7 @@ def getConfig():
 
     # Prompt Condition settings
     parser.add_argument("-p", "--prompt", type=str, help="Prompt to generate image")
-    parser.add_argument("-n", "--negative_prompt", type=str, help="Negative prompt")
+    parser.add_argument("-n", "--negative_prompt", type=str, help="Negative prompt", default="disfigured, ugly, bad, immature, cartoon, anime, 3d, painting, b&w, person, draw, art")
     parser.add_argument("--input_path", type=str, default=None)
 
     # Post Processing Setting
