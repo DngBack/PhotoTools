@@ -32,8 +32,8 @@ def main(args):
         "num_inference_steps": 70,
         "denoising_start": 0.70,
         "guidance_scale": 7.5,
-        # "prompt": args.prompt,
-        # "negative_prompt": args.negative_prompt,
+        "prompt": args.prompt,
+        "negative_prompt": args.negative_prompt,
     }
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -45,14 +45,32 @@ def main(args):
 
     cloth_seg = generate_mask(img, net=model, palette=palette, device=device)
 
+    # Model Pipeline calling
+    inpaint_pipe = AutoPipelineForInpainting.from_pretrained(
+        "stabilityai/stable-diffusion-2-inpainting",
+        torch_dtype=torch.float32,
+    )
+
+    # Execute
+    diffusion_gen = DiffusionGenerationV2(inpaint_pipe, hp_dict, device)
+
+    # Get input
+    image = Image.open(args.input_path)
+
+    # Generate Image
+    output_Image = diffusion_gen.inpaint_image(image=image, mask=ImageOps.invert(cloth_seg))
+
+    # Save Image
+    output_final_url = "./Test_Output/modelGen.png"
+    output_Image.save(output_final_url)
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
 
-    # parser.add_argument("--prompt", type=str, help="Prompt to generate image")
+    parser.add_argument("--prompt", type=str, help="Prompt to generate image")
     parser.add_argument("--input_path", type=str, default=None)
     parser.add_argument("--negative_prompt", type=str, help="Negative prompt", default="disfigured, ugly, bad, immature, cartoon, anime, 3d, painting, b&w, person, draw, art")
-    # parser.add_argument('--checkpoint_path', type=str, default='clothSeg/model/cloth_segm.pth', help='Path to the checkpoint file')
     args = parser.parse_args()
 
     main(args)
