@@ -1,9 +1,8 @@
-from network import U2NET
+from clothSeg.network import U2NET
 
 import os
 from PIL import Image
 import cv2
-import gdown
 import argparse
 import numpy as np
 
@@ -12,7 +11,7 @@ import torch.nn.functional as F
 import torchvision.transforms as transforms
 
 from collections import OrderedDict
-from options import opt
+from clothSeg.options import opt
 
 
 def load_checkpoint(model, checkpoint_path):
@@ -182,11 +181,11 @@ def main(args):
 
 
 
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='Help to set arguments for Cloth Segmentation.')
-    parser.add_argument('--image', type=str, help='Path to the input image')
-    parser.add_argument('--cuda', action='store_true', help='Enable CUDA (default: False)')
-    parser.add_argument('--checkpoint_path', type=str, default='model/cloth_segm.pth', help='Path to the checkpoint file')
-    args = parser.parse_args()
+# if __name__ == '__main__':
+#     parser = argparse.ArgumentParser(description='Help to set arguments for Cloth Segmentation.')
+#     parser.add_argument('--image', type=str, help='Path to the input image')
+#     parser.add_argument('--cuda', action='store_true', help='Enable CUDA (default: False)')
+#     parser.add_argument('--checkpoint_path', type=str, default='model/cloth_segm.pth', help='Path to the checkpoint file')
+#     args = parser.parse_args()
 
-    main(args)
+#     main(args)
