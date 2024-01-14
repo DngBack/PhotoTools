@@ -14,6 +14,7 @@ Project này dùng để chỉnh sửa ảnh theo yêu cầu của người dùn
 - [x] Background Changing (Thay đổi Background dựa vào prompt người dùng nhập)
 - [x] Inpaiting (Thay đổi một vùng ảnh nhỏ dựa trên khu vực được tô và prompt viết bởi người dùng)
 - [x] Remove BackGround (Xóa Phông nền Background)
+- [x] Model Generation (Sinh ra người mẫu giữ quần áo) (Vẫn cần cải thiện thêm)
 
 ## Sử dụng 
 

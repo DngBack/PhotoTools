@@ -44,6 +44,10 @@ def main(args):
     img = Image.open(args.input_path).convert('RGB')
 
     cloth_seg = generate_mask(img, net=model, palette=palette, device=device)
+    thresh = 200
+    fn = lambda x : 255 if x > thresh else 0
+    mask = cloth_seg.convert('L').point(fn, mode='1')
+    
 
     # Model Pipeline calling
     inpaint_pipe = AutoPipelineForInpainting.from_pretrained(
@@ -56,9 +60,10 @@ def main(args):
 
     # Get input
     image = Image.open(args.input_path)
+    
 
     # Generate Image
-    output_Image = diffusion_gen.inpaint_image(image=image, mask=ImageOps.invert(cloth_seg))
+    output_Image = diffusion_gen.inpaint_image(image=image, mask=ImageOps.invert(mask))
 
     # Save Image
     output_final_url = "./Test_Output/modelGen.png"
