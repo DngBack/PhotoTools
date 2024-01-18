@@ -12,15 +12,15 @@ from TRACER.modules.att_modules import RFB_Block, aggregation, ObjectAttention
 
 
 class TRACER(nn.Module):
-    def __init__(self, cfg):
+    def __init__(self, RFB_aggregated_channel = [32, 64, 128]):
         super().__init__()
         self.model = EfficientNet.from_pretrained(
-            f"efficientnet-b{cfg.arch}", advprop=True
+            f"efficientnet-b7", advprop=True
         )
         self.block_idx, self.channels = get_model_shape()
 
         # Receptive Field Blocks
-        channels = [int(arg_c) for arg_c in cfg.RFB_aggregated_channel]
+        channels = [int(arg_c) for arg_c in RFB_aggregated_channel]
         self.rfb2 = RFB_Block(self.channels[1], channels[0])
         self.rfb3 = RFB_Block(self.channels[2], channels[1])
         self.rfb4 = RFB_Block(self.channels[3], channels[2])

@@ -16,23 +16,23 @@ from TRACER.util.utils import load_pretrained
 
 
 class Inference:
-    def __init__(self, args, save_path):
+    def __init__(self, save_path):
         super(Inference, self).__init__()
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        self.test_transform = get_test_augmentation(img_size=args.img_size)
-        self.args = args
+        self.test_transform = get_test_augmentation(img_size=640)
         self.save_path = save_path
 
         # Network
-        self.model = TRACER(args).to(self.device)
-        if args.multi_gpu:
+        self.model = TRACER().to(self.device)
+        multi_gpu = True
+        if multi_gpu==True:
             self.model = nn.DataParallel(self.model).to(self.device)
 
-        path = load_pretrained(f"TE-{args.arch}")
+        path = load_pretrained(f"TE-7")
         self.model.load_state_dict(path)
         print("###### pre-trained Model restored #####")
 
-        te_img_folder = os.path.join(args.data_path, args.dataset)
+        te_img_folder = os.path.join("TRACER/data/", "custom_dataset/")
         te_gt_folder = None
 
         self.test_loader = get_loader(
@@ -40,14 +40,12 @@ class Inference:
             te_gt_folder,
             edge_folder=None,
             phase="test",
-            batch_size=args.batch_size,
+            batch_size=32,
             shuffle=False,
-            num_workers=args.num_workers,
+            num_workers=1,
             transform=self.test_transform,
         )
 
-        if args.save_map is not None:
-            os.makedirs(os.path.join("mask", self.args.dataset), exist_ok=True)
 
     def test(self):
         self.model.eval()
@@ -69,21 +67,20 @@ class Inference:
                     )
 
                     # Save prediction map
-                    if self.args.save_map is not None:
-                        output = (
-                            output.squeeze().detach().cpu().numpy() * 255.0
-                        ).astype(np.uint8)
+                    output = (
+                        output.squeeze().detach().cpu().numpy() * 255.0
+                    ).astype(np.uint8)
 
-                        # cv2.imwrite(
-                        #     os.path.join(
-                        #         "mask", self.args.dataset, image_name[i] + ".png"
-                        #     ),
-                        #     output,
-                        # )
+                    # cv2.imwrite(
+                    #     os.path.join(
+                    #         "mask", self.args.dataset, image_name[i] + ".png"
+                    #     ),
+                    #     output,
+                    # )
 
-                        salient_object = self.post_processing(images[i], output, h, w)
+                    salient_object = self.post_processing(images[i], output, h, w)
 
-                        return output, salient_object
+                    return output, salient_object
 
     def post_processing(
         self, original_image, output_image, height, width, threshold=200

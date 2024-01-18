@@ -158,7 +158,7 @@ class UnionAttentionModule(nn.Module):
     def __init__(self, n_channels, only_channel_tracing=False):
         super(UnionAttentionModule, self).__init__()
         self.GAP = GlobalAvgPool()
-        self.confidence_ratio = cfg.gamma
+        self.confidence_ratio = 0.1
         self.bn = nn.BatchNorm2d(n_channels)
         self.norm = nn.Sequential(
             nn.BatchNorm2d(n_channels), nn.Dropout3d(self.confidence_ratio)
@@ -358,7 +358,7 @@ class ObjectAttention(nn.Module):
         x = mask_ob.expand(-1, self.channel, -1, -1).mul(encoder_map)
 
         edge = mask_bg.clone()
-        edge[edge > cfg.denoise] = 0
+        edge[edge > 0.93] = 0
         x = x + (edge * encoder_map)
 
         x = self.DWSConv(x)
