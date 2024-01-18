@@ -16,31 +16,31 @@ from torch.nn import functional as F
 from torch.utils import model_zoo
 from TRACER.config import getConfig
 
-cfg = getConfig()
+arch = '7'
 
 def get_model_shape():
-    if cfg.arch == '0':
+    if arch == '0':
         block_idx = [2, 4, 10, 15]
         channels = [24, 40, 112, 320]
-    elif cfg.arch == '1':
+    elif arch == '1':
         block_idx = [4, 7, 15, 22]
         channels = [24, 40, 112, 320]
-    elif cfg.arch == '2':
+    elif arch == '2':
         block_idx = [4, 7, 15, 22]
         channels = [24, 48, 120, 352]
-    elif cfg.arch == '3':
+    elif arch == '3':
         block_idx = [4, 7, 17, 25]
         channels = [32, 48, 136, 384]
-    elif cfg.arch == '4':
+    elif arch == '4':
         block_idx = [5, 9, 21, 31]
         channels = [32, 56, 160, 448]
-    elif cfg.arch == '5':
+    elif arch == '5':
         block_idx = [7, 12, 26, 38]
         channels = [40, 64, 176, 512]
-    elif cfg.arch == '6':
+    elif arch == '6':
         block_idx = [8, 14, 30, 44]
         channels = [40, 72, 200, 576]
-    elif cfg.arch == '7':
+    elif arch == '7':
         block_idx = [10, 17, 37, 54]
         channels = [48, 80, 224, 640]
 

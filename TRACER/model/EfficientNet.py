@@ -195,7 +195,7 @@ class EfficientNet(nn.Module):
         self._blocks_args = blocks_args
         self.block_idx, self.channels = get_model_shape()
         self.Frequency_Edge_Module1 = Frequency_Edge_Module(
-            radius=cfg.frequency_radius, channel=self.channels[0]
+            radius=16, channel=self.channels[0]
         )
         # Batch norm parameters
         bn_mom = 1 - self._global_params.batch_norm_momentum

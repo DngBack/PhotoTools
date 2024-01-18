@@ -29,7 +29,7 @@ args = getConfig()
 
 def main(args):
     # Random Seed
-    seed = args.seed
+    seed = 42
     os.environ["PYTHONHASHSEED"] = str(seed)
     random.seed(seed)
     np.random.seed(seed)
@@ -58,7 +58,7 @@ def main(args):
     )
 
     # Get pre-mask
-    mask_of_image, object_of_image = Inference(args, save_path).test()
+    mask_of_image, object_of_image = Inference(save_path).test()
     rgb_image = cv2.cvtColor(mask_of_image, cv2.COLOR_BGR2RGB)
     mask = Image.fromarray(rgb_image)
     cv2.imwrite(filename, object_of_image) 
