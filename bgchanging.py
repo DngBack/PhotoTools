@@ -31,7 +31,7 @@ args = getConfig()
 
 def main(args):
     # Random Seed
-    seed = args.seed
+    seed = 42
     os.environ["PYTHONHASHSEED"] = str(seed)
     random.seed(seed)
     np.random.seed(seed)
