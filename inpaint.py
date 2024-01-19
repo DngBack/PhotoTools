@@ -12,6 +12,7 @@ import cv2
 # TRACER 
 from TRACER.inference.inference import Inference
 from TRACER.config import getConfig, getConfig_Input
+from module import *
 
 # Torch and Numpy 
 import torch
@@ -29,7 +30,7 @@ args = getConfig()
 
 def main(args):
     # Random Seed
-    seed = args.seed
+    seed = 42
     os.environ["PYTHONHASHSEED"] = str(seed)
     random.seed(seed)
     np.random.seed(seed)
@@ -44,34 +45,11 @@ def main(args):
     mask_url = "./Test_Image/Mask.png"
     output_final_url = "./Test_Output/inpaint.png"
 
-    # Setup hyper parameters
-    hp_dict = {
-        "seed" : 116,
-        "kernel_size": (5,5),
-        "kernel_iterations" : 15,
-        "num_inference_steps" : 70,
-        "denoising_start" : 0.70,
-        "guidance_scale" : 7.5,
-        "prompt" : args.prompt,
-        "negative_prompt" : args.negative_prompt,
-        }
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-
-    # Model Pipeline calling
-    inpaint_pipe = AutoPipelineForInpainting.from_pretrained(
-        "stabilityai/stable-diffusion-2-inpainting",
-        torch_dtype=torch.float32,
-    )
-
-    # Execute
-    diffusion_gen = DiffusionGenerationV2(inpaint_pipe, hp_dict, device)
-
-    # Get input
     image = Image.open(args.input_path)
     mask = Image.open(args.mask_path)
-
-    # Generate Image
-    output_Image = diffusion_gen.inpaint_image(image=image, mask=mask)
+    prompt = args.prompt 
+    negative_prompt = args.negative_prompt
+    output_Image = inpaint(image, mask, prompt, negative_prompt)
     output_Image.save(output_final_url)
 
 if __name__ == "__main__":

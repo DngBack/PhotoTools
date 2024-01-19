@@ -22,15 +22,21 @@ import numpy as np
 import os
 
 
-def bgChanging(Image, prompt, negative_prompt):
+def bgChanging(image, prompt, negative_prompt):
     """
+    Args: 
+        image (PIL Image): Image input for processing 
+        prompt (String): Description to be able to change the background of the input image
+        negative_prompt (String): The description for the model to generate avoids the following requirements
+    Output: 
+        Image (PIL Image)
     """
 
     # Set Some Config Path
     img_url = "./TRACER/data/custom_dataset/Image.png"
 
     # Get image
-    save_input = cv2.imwrite(img_url, image)
+    image.save(img_url)
 
     # Setting 
     arch = "7"
@@ -84,6 +90,15 @@ def bgChanging(Image, prompt, negative_prompt):
 
 
 def inpaint(image, mask, prompt, negative_prompt):
+    """
+    Args: 
+        image (PIL Image): Image input for processing 
+        mask (PIL Image): Area that can be changed in the image
+        prompt (String): Description to change the highlighted part
+        negative_prompt (String): The description for the model to generate avoids the following
+    Output:
+        image (PIL Image)
+    """
     # Setup hyper parameters
     hp_dict = {
         "seed" : 116,
@@ -112,12 +127,18 @@ def inpaint(image, mask, prompt, negative_prompt):
 
 
 def rmbg(image):
+    """
+    Args:
+        image (PIL Image): Image input for processing
+    Output:
+        image (PIL Image)
+    """
 
     # Set Some Config Path
     img_url = "./TRACER/data/custom_dataset/Image.png"
 
     # Get image
-    save_input = cv2.imwrite(img_url, image)
+    image.save(img_url)
 
     # Setting 
     arch = "7"

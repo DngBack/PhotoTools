@@ -12,6 +12,7 @@ import cv2
 # TRACER 
 from TRACER.inference.inference import Inference
 from TRACER.config import getConfig, getConfig_Input
+from module import *
 
 # Torch and Numpy 
 import torch
@@ -29,7 +30,7 @@ args = getConfig()
 
 def main(args):
     # Random Seed
-    seed = args.seed
+    seed = 42
     os.environ["PYTHONHASHSEED"] = str(seed)
     random.seed(seed)
     np.random.seed(seed)
@@ -46,20 +47,8 @@ def main(args):
     # Filename 
     filename = './Test_Output/object.png'
 
-    # Get image
-    input_url = args.input_path
-    inputImage = cv2.imread(input_url)
-    save_input = cv2.imwrite(img_url, inputImage)
-
-    # Remove Back ground and get
-    save_path = os.path.join(
-        args.model_path, args.dataset, f"TE{args.arch}_{str(args.exp_num)}"
-    )
-
-    # Get pre-mask
-    mask_of_image, object_of_image = Inference(args, save_path).test()
-    rgb_image = cv2.cvtColor(mask_of_image, cv2.COLOR_BGR2RGB)
-    mask = Image.fromarray(rgb_image)
+    image = Image.open(args.input_path)
+    object_of_image = rmbg(image)
     cv2.imwrite(filename, object_of_image) 
 
 if __name__ == "__main__":
