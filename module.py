@@ -21,6 +21,11 @@ import numpy as np
 # Generate Library
 import os
 
+#load module 
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+diffusion_gen = DiffusionGenerationV2(device=device)
+diffusion_gen.load_module()
+
 
 def bgChanging(image, prompt, negative_prompt):
     """
@@ -54,32 +59,29 @@ def bgChanging(image, prompt, negative_prompt):
     mask = mask.convert('L').point(fn, mode='1')
 
     # Setup hyper parameters
-    hp_dict = {
-        "seed": -305,
-        "kernel_size": (5, 5),
-        "kernel_iterations": 15,
-        "num_inference_steps": 70,
-        "denoising_start": 0.70,
-        "guidance_scale": 7.5,
-        "prompt": prompt,
-        "negative_prompt": negative_prompt,
-    }
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    # hp_dict = {
+    #     "seed": -305,
+    #     "kernel_size": (5, 5),
+    #     "kernel_iterations": 15,
+    #     "num_inference_steps": 70,
+    #     "denoising_start": 0.70,
+    #     "guidance_scale": 7.5,
+    #     "prompt": prompt,
+    #     "negative_prompt": negative_prompt,
+    # }
 
     # Model Pipeline calling
-    inpaint_pipe = AutoPipelineForInpainting.from_pretrained(
-        "stabilityai/stable-diffusion-2-inpainting",
-        torch_dtype=torch.float32,
-    )
+    # inpaint_pipe = AutoPipelineForInpainting.from_pretrained(
+    #     "stabilityai/stable-diffusion-2-inpainting",
+    #     torch_dtype=torch.float32,
+    # )
 
-    # Load model 
-    diffusion_gen = DiffusionGenerationV2(inpaint_pipe, hp_dict, device)
 
     # Get input
     image = Image.open(img_url)
 
     # Generate Image
-    output_Image = diffusion_gen.inpaint_image(image=image, mask=ImageOps.invert(mask))
+    output_Image = diffusion_gen.inpaint_image(image=image, mask=ImageOps.invert(mask), prompt=prompt, negative_prompt=negative_prompt)
 
     # # Execute
     post_processing = PostProcessing(image, mask, output_Image)
