@@ -21,11 +21,16 @@ import numpy as np
 # Generate Library
 import os
 
+import requests
+import json 
+
 #load module 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 diffusion_gen = DiffusionGenerationV2(device=device)
 diffusion_gen.load_module()
 
+key = 'KwZbudwQD9xXiWqQzmeXdgtBkVK5X5DMYI3JgxenBahHBTd7oq7IB5x0TRpw'
+url = "https://stablediffusionapi.com/api/v4/dreambooth/inpaint"
 
 def bgChanging(image, prompt, negative_prompt):
     """
@@ -114,3 +119,8 @@ def rmbg(image):
     rgb_image = cv2.cvtColor(mask_of_image, cv2.COLOR_BGR2RGB)
     mask = Image.fromarray(rgb_image)
     return object_of_image
+
+
+def bgChangingAPI(image, prompt, negative_prompt):
+    
+    pass 
