@@ -52,7 +52,7 @@ def main(args):
     prompt = args.prompt
     negative_prompt = args.negative_prompt
 
-    output_final = bgChanging(image, prompt, negative_prompt)
+    output_final = bgChangingAPI(image, prompt, negative_prompt)
 
     output_final.save(output_final_url)
 

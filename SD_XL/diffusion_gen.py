@@ -136,6 +136,6 @@ class DiffusionGenerationAPI:
 
         response_out = requests.request("POST", url_fetch, headers=headers, data=payload)
         out_image = json.loads(response_out.text)
-        outImageUrl = out_image['output']
-
+        outImageUrl = str(out_image[0]).replace('temp', 'generations')
+        
         return outImageUrl
