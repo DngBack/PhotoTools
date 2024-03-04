@@ -251,6 +251,7 @@ def bgChangingAPI(image, prompt, negative_prompt):
 
     # Get Image 
     image = get_image_from_url_base64(API_img_url)
+    image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
 
     return image 
 
@@ -266,5 +267,6 @@ def inpaintAPI(image, mask, prompt, negative_prompt):
 
     # Get Image 
     image = get_image_from_url_base64(API_img_url)
+    image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
 
     return image
