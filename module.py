@@ -242,27 +242,24 @@ def bgChangingAPI(image, prompt, negative_prompt):
     height,width = image.shape[:2]
 
     # Get API to image 
-    API_img_url = diffusion_gen.inpaint_image(image=base64_img, mask=base64_mask, width=width, height=height, url=url, url_fetch=url_fetch, key=key)
+    API_img_url = diffusion_gen.inpaint_image(image=base64_img, mask=base64_mask, width=width, height=height, prompt=prompt, negative_prompt=negative_prompt, url=url, url_fetch=url_fetch, key=key)
 
     # Get Image 
     image = get_image_from_url_base64(API_img_url)
 
     return image 
 
-def inpaint(image, mask, prompt, negative_prompt):
+def inpaintAPI(image, mask, prompt, negative_prompt):
     # Convert image and mask to base64 
     base64_img = convert_to_base64(image)
     base64_mask = convert_mask_to_base64(mask)
 
     # Get height and width of image 
-    height,width = image.shape[:2]# Get API to image 
-    API_img_url = diffusion_gen.inpaint_image(image=base64_img, mask=base64_mask, width=width, height=height, url=url, url_fetch=url_fetch, key=key)
-
-    # Get Image 
-    image = get_image_from_url_base64(API_img_url)
-
+    height,width = image.shape[:2]
     # Get API to image 
     API_img_url = diffusion_gen.inpaint_image(image=base64_img, mask=base64_mask, width=width, height=height, url=url, url_fetch=url_fetch, key=key)
 
     # Get Image 
     image = get_image_from_url_base64(API_img_url)
+
+    return image
