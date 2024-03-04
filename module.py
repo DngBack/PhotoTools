@@ -230,9 +230,14 @@ def bgChangingAPI(image, prompt, negative_prompt):
     mask = mask.convert('L').point(fn, mode='1')
     mask = ImageOps.invert(mask)
 
-    # Chuyển đổi ảnh sang mảng NumPy
-    mask_cv2 = np.array(mask)
-    mask = cv2.cvtColor(mask_cv2, cv2.COLOR_RGB2BGR)
+    # Chuyển đổi ảnh sang dạng RGB.
+    rgb_image = mask.convert('RGB')
+
+    # Lấy dữ liệu ảnh dưới dạng mảng NumPy.
+    cv2_image = np.array(rgb_image)
+
+    # BGR là định dạng màu mặc định của OpenCV.
+    mask = cv2.cvtColor(cv2_image, cv2.COLOR_RGB2BGR)
 
     # Convert image and mask to base64 
     base64_img = convert_to_base64(image)

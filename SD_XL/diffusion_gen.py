@@ -9,8 +9,57 @@ from PIL import Image
 from diffusers import AutoPipelineForInpainting
 from diffusers.utils import load_image
 
+# Generate Library
+import os
 import requests
 import json 
+import requests
+import base64
+from io import BytesIO
+from PIL import Image
+
+
+def convert_to_base64(image):
+  """
+  Chuyển đổi ảnh sang dạng base64
+
+  Args:
+    image_path: Đường dẫn đến ảnh
+
+  Returns:
+    Chuỗi base64 của ảnh
+  """
+
+  # Đọc ảnh
+  # image = cv2.imread(image_path)
+
+  # Mã hóa ảnh sang dạng base64
+  _, buffer = cv2.imencode('.jpg', image)
+  base64_string = base64.b64encode(buffer.tobytes()).decode("utf-8")
+
+  return base64_string
+
+
+def convert_mask_to_base64(image):
+  """
+  Chuyển đổi ảnh đen trắng sang dạng base64
+
+  Args:
+    image_path: Đường dẫn đến ảnh
+
+  Returns:
+    Chuỗi base64 của ảnh
+  """
+
+  # Đọc ảnh
+  # image = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
+
+  # Mã hóa ảnh sang dạng base64
+  _, buffer = cv2.imencode('.jpg', image)
+  base64_string = base64.b64encode(buffer.tobytes()).decode("utf-8")
+
+  return base64_string
+
 
 class DiffusionGenerationV2:
     """
@@ -89,6 +138,8 @@ class DiffusionGenerationAPI:
         self.device = device
 
     def inpaint_image(self, image, mask, width, height, prompt, negative_prompt, url, url_fetch, key):
+        base64_img = convert_to_base64(image)
+        base64_mask = convert_mask_to_base64(mask)
         payload = json.dumps({
             "key": key,
             "model_id":'epicrealism5',
@@ -114,7 +165,7 @@ class DiffusionGenerationAPI:
             "embeddings_model": None,
             "webhook": None,
             "track_id": None,
-            "base": "yes",
+            "base64": "yes",
             })
         
         headers = {
@@ -136,6 +187,7 @@ class DiffusionGenerationAPI:
 
         response_out = requests.request("POST", url_fetch, headers=headers, data=payload)
         out_image = json.loads(response_out.text)
-        outImageUrl = str(out_image[0]).replace('temp', 'generations')
+        output_url = str(out_image['output'][0])
+        outImageUrl = output_url.replace('temp', 'generations')
         
         return outImageUrl
