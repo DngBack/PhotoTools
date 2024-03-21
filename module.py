@@ -35,7 +35,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 diffusion_gen = DiffusionGenerationAPI(device=device)
 
 
-key = 'KwZbudwQD9xXiWqQzmeXdgtBkVK5X5DMYI3JgxenBahHBTd7oq7IB5x0TRpw'
+key = 'fl2XSerYleMGv6w7M4nw1PUm9fhc8iR04dTYZ1c7DhpUoGXSNIBbcPlGbCiM'
 url = "https://stablediffusionapi.com/api/v4/dreambooth/inpaint"
 url_fetch = "https://stablediffusionapi.com/api/v4/dreambooth/fetch"
 
