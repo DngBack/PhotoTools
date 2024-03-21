@@ -263,7 +263,7 @@ def inpaintAPI(image, mask, prompt, negative_prompt):
     # Get height and width of image 
     height,width = image.shape[:2]
     # Get API to image 
-    API_img_url = diffusion_gen.inpaint_image(image=image, mask=mask, width=width, height=height, url=url, url_fetch=url_fetch, key=key)
+    API_img_url = diffusion_gen.inpaint_image(image=image, mask=mask, width=width, height=height, prompt=prompt, negative_prompt=negative_prompt, url=url, url_fetch=url_fetch, key=key)
 
     # Get Image 
     image = get_image_from_url_base64(API_img_url)
