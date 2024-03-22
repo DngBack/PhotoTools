@@ -175,6 +175,7 @@ class DiffusionGenerationAPI:
         response = requests.request("POST", url, headers=headers, data=payload)
 
         out = json.loads(response.text)
+        print(out)
 
         payload = json.dumps({
         "key": key,
