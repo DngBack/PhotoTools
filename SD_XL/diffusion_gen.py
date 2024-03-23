@@ -196,8 +196,11 @@ class DiffusionGenerationAPI:
     
     def pipelineApi(self, image, mask, width, height, prompt, negative_prompt, url, url_fetch, key):
         outSD = self.inpaintingApi(image=image, mask=mask, width=width, height=height, prompt=prompt, negative_prompt=negative_prompt, url=url, key=key)
-        while outSD['status'] == 'processing':
-            outSD = self.reloadImage(outSD, url_fetch, key)
-        output_url = str(outSD['output'][0])
+        status_outSD = outSD['status']
+        print(status_outSD)
+        while status_outSD == 'processing':
+            outReload = self.reloadImage(outSD, url_fetch, key)
+            status_outSD = outReload['status']
+        output_url = str(outReload['output'][0])
         outImageUrl = output_url.replace('temp', 'generations')
         return outImageUrl

@@ -240,7 +240,7 @@ def bgChangingAPI(image, prompt, negative_prompt):
     mask = cv2.cvtColor(cv2_image, cv2.COLOR_RGB2BGR)
 
     ## Update Prompt 
-    prompt = prompt + " not details related to people or human parts, highly detailed, hyperrealistic, 8k, high resolution"
+    prompt = prompt + ", Only give birth to contextual details, not human details, not details related to people or human parts, highly detailed, hyperrealistic, 8k, high resolution"
 
     # Get height and width of image 
     height,width = image.shape[:2]
