@@ -137,7 +137,7 @@ class DiffusionGenerationAPI:
 
         self.device = device
 
-    def inpaint_image(self, image, mask, width, height, prompt, negative_prompt, url, url_fetch, key):
+    def inpaintingApi(self, image, mask, width, height, prompt, negative_prompt, url, key):
         base64_img = convert_to_base64(image)
         base64_mask = convert_mask_to_base64(mask)
         payload = json.dumps({
@@ -176,10 +176,13 @@ class DiffusionGenerationAPI:
 
         out = json.loads(response.text)
         print(out)
-
+        
+        return out
+    
+    def reloadImage(self, outSD, url_fetch, key): 
         payload = json.dumps({
         "key": key,
-        "request_id": out['id']
+        "request_id": outSD['id']
         })
 
         headers = {
@@ -188,7 +191,13 @@ class DiffusionGenerationAPI:
 
         response_out = requests.request("POST", url_fetch, headers=headers, data=payload)
         out_image = json.loads(response_out.text)
-        output_url = str(out_image['output'][0])
+        print(out_image)
+        return out_image
+    
+    def pipelineApi(self, image, mask, width, height, prompt, negative_prompt, url, url_fetch, key):
+        outSD = self.inpaintingApi(image=image, mask=mask, width=width, height=height, prompt=prompt, negative_prompt=negative_prompt, url=url, key=key)
+        while outSD['status'] == 'processing':
+            outSD = self.reloadImage(outSD, url_fetch, key)
+        output_url = str(outSD['output'][0])
         outImageUrl = output_url.replace('temp', 'generations')
-        
         return outImageUrl
