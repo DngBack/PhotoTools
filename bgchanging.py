@@ -44,7 +44,7 @@ def main(args):
 
     # Set Some Config Path
     img_url = "./TRACER/data/custom_dataset/Image.png"
-    output_final_url = "./Test_Output/bg_output.png"
+    output_final_url = args.output_path
 
     # Get image
     input_url = args.input_path

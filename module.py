@@ -239,9 +239,8 @@ def bgChangingAPI(image, prompt, negative_prompt):
     # BGR là định dạng màu mặc định của OpenCV.
     mask = cv2.cvtColor(cv2_image, cv2.COLOR_RGB2BGR)
 
-    # Convert image and mask to base64 
-    # base64_img = convert_to_base64(image)
-    # base64_mask = convert_mask_to_base64(mask)
+    ## Update Prompt 
+    prompt = prompt + " not details related to people or human parts, highly detailed, hyperrealistic, 8k, high resolution"
 
     # Get height and width of image 
     height,width = image.shape[:2]

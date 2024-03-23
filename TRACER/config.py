@@ -15,6 +15,7 @@ def getConfig():
     parser.add_argument("-p", "--prompt", type=str, help="Prompt to generate image")
     parser.add_argument("-n", "--negative_prompt", type=str, help="Negative prompt", default="disfigured, ugly, bad, immature, cartoon, anime, 3d, painting, b&w, person, draw, art")
     parser.add_argument("--input_path", type=str, default=None)
+    parser.add_argument("--output_path", type=str, default="./Test_Output/bg_output.png")
     parser.add_argument("--mask_path", type=str, default=None)
 
     # Post Processing Setting
