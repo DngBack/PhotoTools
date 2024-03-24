@@ -196,15 +196,21 @@ class DiffusionGenerationAPI:
     
     def pipelineApi(self, image, mask, width, height, prompt, negative_prompt, url, url_fetch, key):
         outSD = self.inpaintingApi(image=image, mask=mask, width=width, height=height, prompt=prompt, negative_prompt=negative_prompt, url=url, key=key)
-        status_outSD = outSD['status']
+        status_outSD = None
+        while status_outSD != 'success':
+            outReload = self.reloadImage(outSD, url_fetch, key)
+            status_outSD = outReload['status']
+            print(status_outSD)
+        output_url = str(outReload['output'][0])
+        outImageUrl = output_url.replace('temp', 'generations')
         print(status_outSD)
-        if status_outSD == 'success': 
-            output_url = str(outSD['output'][0])
-            outImageUrl = output_url.replace('temp', 'generations')
-        else: 
-            while status_outSD != 'success':
-                outReload = self.reloadImage(outSD, url_fetch, key)
-                status_outSD = outReload['status']
-            output_url = str(outReload['output'][0])
-            outImageUrl = output_url.replace('temp', 'generations')
+        # if status_outSD == 'success': 
+        #     output_url = str(outSD['output'][0])
+        #     outImageUrl = output_url.replace('temp', 'generations')
+        # else: 
+        #     while status_outSD != 'success':
+        #         outReload = self.reloadImage(outSD, url_fetch, key)
+        #         status_outSD = outReload['status']
+        #     output_url = str(outReload['output'][0])
+        #     outImageUrl = output_url.replace('temp', 'generations')
         return outImageUrl
