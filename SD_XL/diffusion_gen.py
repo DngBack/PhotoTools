@@ -198,9 +198,13 @@ class DiffusionGenerationAPI:
         outSD = self.inpaintingApi(image=image, mask=mask, width=width, height=height, prompt=prompt, negative_prompt=negative_prompt, url=url, key=key)
         status_outSD = outSD['status']
         print(status_outSD)
-        while status_outSD == 'processing':
-            outReload = self.reloadImage(outSD, url_fetch, key)
-            status_outSD = outReload['status']
-        output_url = str(outReload['output'][0])
-        outImageUrl = output_url.replace('temp', 'generations')
+        if status_outSD == 'success': 
+            output_url = str(outSD['output'][0])
+            outImageUrl = output_url.replace('temp', 'generations')
+        else: 
+            while status_outSD != 'success':
+                outReload = self.reloadImage(outSD, url_fetch, key)
+                status_outSD = outReload['status']
+            output_url = str(outReload['output'][0])
+            outImageUrl = output_url.replace('temp', 'generations')
         return outImageUrl
