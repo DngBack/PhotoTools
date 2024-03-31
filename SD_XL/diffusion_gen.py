@@ -175,7 +175,6 @@ class DiffusionGenerationAPI:
         response = requests.request("POST", url, headers=headers, data=payload)
 
         out = json.loads(response.text)
-        print(out)
         
         return out
     
@@ -195,13 +194,13 @@ class DiffusionGenerationAPI:
         return out_image
     
     def pipelineApi(self, image, mask, width, height, prompt, negative_prompt, url, url_fetch, key):
-        outSD = self.inpaintingApi(image=image, mask=mask, width=width, height=height, prompt=prompt, negative_prompt=negative_prompt, url=url, key=key)
+        # outSD = self.inpaintingApi(image=image, mask=mask, width=width, height=height, prompt=prompt, negative_prompt=negative_prompt, url=url, key=key)
         status_outSD = None
         while status_outSD != 'success':
-            outReload = self.reloadImage(outSD, url_fetch, key)
-            status_outSD = outReload['status']
+            outSD = self.inpaintingApi(image=image, mask=mask, width=width, height=height, prompt=prompt, negative_prompt=negative_prompt, url=url, key=key)
+            status_outSD = outSD['status']
             print(status_outSD)
-        output_url = str(outReload['output'][0])
+        output_url = str(outSD['output'][0])
         outImageUrl = output_url.replace('temp', 'generations')
         print(status_outSD)
         # if status_outSD == 'success': 
