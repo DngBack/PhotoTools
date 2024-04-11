@@ -35,7 +35,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 diffusion_gen = DiffusionGenerationAPI(device=device)
 
 
-key = 'fl2XSerYleMGv6w7M4nw1PUm9fhc8iR04dTYZ1c7DhpUoGXSNIBbcPlGbCiM'
+key = 'vTa6tWItRYLCY0877UeCJbceC1QkzKzPakyRAn1pjN5wHXmqg30lRtPkpWbe'
 url = "https://modelslab.com/api/v6/images/inpaint"
 url_fetch = "https://modelslab.com/api/v6/images/fetch"
 
