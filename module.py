@@ -36,8 +36,8 @@ diffusion_gen = DiffusionGenerationAPI(device=device)
 
 
 key = 'fl2XSerYleMGv6w7M4nw1PUm9fhc8iR04dTYZ1c7DhpUoGXSNIBbcPlGbCiM'
-url = "https://stablediffusionapi.com/api/v4/dreambooth/inpaint"
-url_fetch = "https://stablediffusionapi.com/api/v4/dreambooth/fetch"
+url = "https://modelslab.com/api/v6/images/inpaint"
+url_fetch = "https://modelslab.com/api/v6/images/fetch"
 
 
 def convert_to_base64(image):
