@@ -6,7 +6,7 @@ import cv2
 from PIL import Image
 
 # Huggingface: Stable Diffusion Library
-from diffusers import AutoPipelineForInpainting
+from diffusers import AutoPipelineForInpainting, StableDiffusionInpaintPipeline
 from diffusers.utils import load_image
 
 # Generate Library
@@ -206,3 +206,63 @@ class DiffusionGenerationAPI:
         outImageUrl = output_url.replace('temp', 'generations')
         print(status_outSD)
         return outImageUrl
+    
+
+# Model with stablediffusionapi/epicdream
+class DiffusionGenerationEpicDream:
+    """
+    Stable Diffusion for generation process.
+    Using Stable Diffusion 2.0 from stability
+
+    """
+
+    def __init__(self,  device):
+        """
+        Args:
+            device (torch.device): Device used.
+        """
+        # Setup device
+        self.device = device
+
+    def load_module(self, module_path= "stabilityai/stable-diffusion-2-inpainting"):
+        inpaint_pipe = StableDiffusionInpaintPipeline.from_pretrained(
+            "stablediffusionapi/epicdream", torch_dtype=torch.float32
+        )
+
+        self.inpaint_pipe = inpaint_pipe.to(self.device)
+
+
+    def inpaint_image(self, image, mask, prompt, negative_prompt):
+        """
+        Inpainting function
+
+        Args:
+            image (PIL.Image): Input image
+            mask (PIL.Image): Mask image
+
+        Returns:
+            inpainted_image (PIL.Image): Inpainted image
+        """
+        # Save ori_size of input image to reconstruct
+        ori_size = image.size
+
+        # Resize image and mask to passing model
+        width, height = image.size
+
+        # Apply pipeline
+        generator = torch.Generator(self.device).manual_seed(42)
+        result = self.inpaint_pipe(
+            image=image,
+            mask_image=mask,
+            prompt= prompt,
+            negative_prompt= negative_prompt,
+            height=height,
+            width=width,
+            generator=generator,
+        )
+        output_image = result.images[0]
+
+        # Resize inpainted image to original size
+        inpainted_image = output_image.resize(ori_size)
+
+        return inpainted_image

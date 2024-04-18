@@ -32,8 +32,9 @@ from PIL import Image
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 # diffusion_gen = DiffusionGenerationV2(device=device)
 # diffusion_gen.load_module()
-diffusion_gen = DiffusionGenerationAPI(device=device)
-
+# diffusion_gen = DiffusionGenerationAPI(device=device)
+diffusion_gen = DiffusionGenerationEpicDream(device=device)
+diffusion_gen.load_module()
 
 key = 'vTa6tWItRYLCY0877UeCJbceC1QkzKzPakyRAn1pjN5wHXmqg30lRtPkpWbe'
 url = "https://modelslab.com/api/v6/images/inpaint"
