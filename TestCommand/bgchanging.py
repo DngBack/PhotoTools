@@ -5,6 +5,7 @@ from diffusers.utils import load_image
 # Image Gen Library
 from SD_XL.diffusion_gen import *
 from SD_XL.post_process import *
+from SD_XL.module import *
 
 # Image Library
 from PIL import Image, ImageOps
@@ -12,8 +13,7 @@ import cv2
 
 # TRACER and module 
 from TRACER.inference.inference import Inference
-from TRACER.config import getConfig, getConfig_Input
-from module import *
+from TRACER.config import getConfig
 
 # Torch and Numpy 
 import torch

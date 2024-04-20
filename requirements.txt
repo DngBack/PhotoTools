@@ -28,7 +28,6 @@ diffusers
 transformers
 ftfy 
 gradio
-accelerate
 torch
 # git+https://github.com/sberbank-ai/Real-ESRGAN.git
 pipe
@@ -46,3 +45,9 @@ gdown
 Pillow
 opencv-python
 numpy
+
+# Demo task
+diffusers
+transformers 
+ftfy 
+gradio 

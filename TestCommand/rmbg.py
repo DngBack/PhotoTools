@@ -12,7 +12,7 @@ import cv2
 # TRACER 
 from TRACER.inference.inference import Inference
 from TRACER.config import getConfig, getConfig_Input
-from module import *
+from SD_XL.module import *
 
 # Torch and Numpy 
 import torch
