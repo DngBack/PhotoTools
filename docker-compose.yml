@@ -1,0 +1,10 @@
+version: '3.7'
+
+services:
+  model_services:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: ["python", "API/main.py"]
+    volumes:
+      - ./weights/huggingface:/root/.cached/huggingface
