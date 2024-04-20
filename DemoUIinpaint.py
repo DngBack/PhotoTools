@@ -9,7 +9,7 @@ from diffusers import StableDiffusionInpaintPipeline
 
 #Select device and create a pipe
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-model_path = "stabilityai/stable-diffusion-2-inpainting"
+model_path = "stablediffusionapi/epicdream"
 
 pipe = StableDiffusionInpaintPipeline.from_pretrained(
     model_path,
@@ -21,7 +21,7 @@ def predict(dict, prompt):
   image =  dict['image'].convert("RGB").resize((512, 512))
   mask_image = dict['mask'].convert("RGB").resize((512, 512))
   images = pipe(prompt=prompt, image=image, mask_image=mask_image).images
-  return(images[0])
+  return(images)
 
 # Gradio run and implement interface
 gr.Interface(

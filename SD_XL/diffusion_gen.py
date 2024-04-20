@@ -224,7 +224,7 @@ class DiffusionGenerationEpicDream:
         # Setup device
         self.device = device
 
-    def load_module(self, module_path= "stabilityai/stable-diffusion-2-inpainting"):
+    def load_module(self, module_path= "stablediffusionapi/epicdream"):
         inpaint_pipe = StableDiffusionInpaintPipeline.from_pretrained(
             "stablediffusionapi/epicdream", torch_dtype=torch.float32
         )

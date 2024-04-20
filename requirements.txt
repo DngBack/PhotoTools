@@ -50,4 +50,8 @@ numpy
 diffusers
 transformers 
 ftfy 
-gradio 
+gradio==3.24.0
+
+# API 
+fastapi
+uvicorn[standard]
