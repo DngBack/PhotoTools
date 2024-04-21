@@ -5,6 +5,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    command: ["python", "API/main.py"]
+    command: ["python", "/API/main.py"]
     volumes:
       - ./weights/huggingface:/root/.cached/huggingface

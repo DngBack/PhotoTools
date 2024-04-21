@@ -30,7 +30,6 @@ COPY requirements.txt /tmp/requirements.txt
 
 RUN pip install -r /tmp/requirements.txt
 
-WORKDIR /app
-COPY ./app/* /app/
+COPY . . 
 
-CMD ["python", "API/main.py"]
+CMD ["uvicorn", "app.main:app", "--proxy-headers", "--host", "0.0.0.0", "--port", "80"]
