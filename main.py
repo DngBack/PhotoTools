@@ -84,3 +84,6 @@ def inpainting(imageInfo:ImageInfoInpaint):
     image_output = pil_to_base64(image_output)
 
     return image_output
+
+if __name__ == "__main__":
+    uvicorn.run("main:app", port=8081, reload=True)
