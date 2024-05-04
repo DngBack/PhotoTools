@@ -30,16 +30,8 @@ from PIL import Image
 
 #load module 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-# diffusion_gen = DiffusionGenerationV2(device=device)
-# diffusion_gen.load_module()
-# diffusion_gen = DiffusionGenerationAPI(device=device)
 diffusion_gen = DiffusionGenerationEpicDream(device=device)
 diffusion_gen.load_module()
-
-key = 'vTa6tWItRYLCY0877UeCJbceC1QkzKzPakyRAn1pjN5wHXmqg30lRtPkpWbe'
-url = "https://modelslab.com/api/v6/images/inpaint"
-url_fetch = "https://modelslab.com/api/v6/images/fetch"
-
 
 def convert_to_base64(image):
   """
@@ -198,75 +190,3 @@ def rmbg(image):
     rgb_image = cv2.cvtColor(mask_of_image, cv2.COLOR_BGR2RGB)
     mask = Image.fromarray(rgb_image)
     return object_of_image
-
-
-def bgChangingAPI(image, prompt, negative_prompt):
-    """
-    Args: 
-        image (CV2 Image): Image input for processing 
-        prompt (String): Description to be able to change the background of the input image
-        negative_prompt (String): The description for the model to generate avoids the following requirements
-    Output: 
-        Image (CV2 Image)
-    """
-    # Set Some Config Path
-    img_url = "./TRACER/data/custom_dataset/Image.png"
-
-    # Get image
-    cv2.imwrite(img_url, image)
-
-    # Setting 
-    arch = "7"
-    exp_num = 0
-    save_path = os.path.join(
-        "results/", "custom_dataset/", f"TE{arch}_{str(exp_num)}"
-    )
-
-    # Get pre-mask
-    mask_of_image, object_of_image = Inference(save_path).test()
-    rgb_image = cv2.cvtColor(mask_of_image, cv2.COLOR_BGR2RGB)
-    mask = Image.fromarray(rgb_image)
-    thresh = 200
-    fn = lambda x : 255 if x > thresh else 0
-    mask = mask.convert('L').point(fn, mode='1')
-    mask = ImageOps.invert(mask)
-
-    # Chuyển đổi ảnh sang dạng RGB.
-    rgb_image = mask.convert('RGB')
-
-    # Lấy dữ liệu ảnh dưới dạng mảng NumPy.
-    cv2_image = np.array(rgb_image)
-
-    # BGR là định dạng màu mặc định của OpenCV.
-    mask = cv2.cvtColor(cv2_image, cv2.COLOR_RGB2BGR)
-
-    ## Update Prompt 
-    prompt = prompt + ", Only give birth to contextual details, not human details, not details related to people or human parts, highly detailed, hyperrealistic, 8k, high resolution"
-
-    # Get height and width of image 
-    height,width = image.shape[:2]
-
-    # Get API to image 
-    API_img_url = diffusion_gen.pipelineApi(image=image, mask=mask, width=width, height=height, prompt=prompt, negative_prompt=negative_prompt, url=url, url_fetch=url_fetch, key=key)
-
-    # Get Image 
-    image = get_image_from_url_base64(API_img_url)
-    image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
-
-    return image 
-
-def inpaintAPI(image, mask, prompt, negative_prompt):
-    # Convert image and mask to base64 
-    # base64_img = convert_to_base64(image)
-    # base64_mask = convert_mask_to_base64(mask)
-
-    # Get height and width of image 
-    height,width = image.shape[:2]
-    # Get API to image 
-    API_img_url = diffusion_gen.pipelineApi(image=image, mask=mask, width=width, height=height, prompt=prompt, negative_prompt=negative_prompt, url=url, url_fetch=url_fetch, key=key)
-
-    # Get Image 
-    image = get_image_from_url_base64(API_img_url)
-    image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
-
-    return image
