@@ -138,7 +138,7 @@ class DiffusionGenerationEpicDream:
 
     def load_module(self, module_path= "stablediffusionapi/epicdream"):
         inpaint_pipe = StableDiffusionInpaintPipeline.from_pretrained(
-            "stablediffusionapi/epicdream", torch_dtype=torch.float32
+            module_path, torch_dtype=torch.float32
         )
 
         self.inpaint_pipe = inpaint_pipe.to(self.device)

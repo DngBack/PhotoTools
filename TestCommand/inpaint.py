@@ -49,7 +49,7 @@ def main(args):
     mask = Image.open(args.mask_path)
     prompt = args.prompt 
     negative_prompt = args.negative_prompt
-    output_Image = inpaintAPI(image, mask, prompt, negative_prompt)
+    output_Image = inpaint(image, mask, prompt, negative_prompt)
     output_Image.save(output_final_url)
 
 if __name__ == "__main__":
